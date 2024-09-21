@@ -4,8 +4,12 @@
   "namespace": "com.weather.info.avro",
   "fields": [
     {
-      "name": "timestamp",
+      "name": "deviceId",
       "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "long"
     },
     {
       "name": "location",
@@ -37,18 +41,6 @@
           {
             "name": "unit",
             "type": "string"
-          },
-          {
-            "name": "feels_like",
-            "type": "double"
-          },
-          {
-            "name": "min",
-            "type": "double"
-          },
-          {
-            "name": "max",
-            "type": "double"
           }
         ]
       }
