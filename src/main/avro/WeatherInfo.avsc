@@ -1,0 +1,120 @@
+{
+  "type": "record",
+  "name": "WeatherData",
+  "namespace": "com.weather.info.avro",
+  "fields": [
+    {
+      "name": "timestamp",
+      "type": "string"
+    },
+    {
+      "name": "location",
+      "type": {
+        "type": "record",
+        "name": "Location",
+        "fields": [
+          {
+            "name": "latitude",
+            "type": "double"
+          },
+          {
+            "name": "longitude",
+            "type": "double"
+          }
+        ]
+      }
+    },
+    {
+      "name": "temperature",
+      "type": {
+        "type": "record",
+        "name": "Temperature",
+        "fields": [
+          {
+            "name": "current",
+            "type": "double"
+          },
+          {
+            "name": "unit",
+            "type": "string"
+          },
+          {
+            "name": "feels_like",
+            "type": "double"
+          },
+          {
+            "name": "min",
+            "type": "double"
+          },
+          {
+            "name": "max",
+            "type": "double"
+          }
+        ]
+      }
+    },
+    {
+      "name": "humidity",
+      "type": {
+        "type": "record",
+        "name": "Humidity",
+        "fields": [
+          {
+            "name": "value",
+            "type": "int"
+          },
+          {
+            "name": "unit",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "pressure",
+      "type": {
+        "type": "record",
+        "name": "Pressure",
+        "fields": [
+          {
+            "name": "value",
+            "type": "int"
+          },
+          {
+            "name": "unit",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "wind",
+      "type": {
+        "type": "record",
+        "name": "Wind",
+        "fields": [
+          {
+            "name": "speed",
+            "type": "double"
+          },
+          {
+            "name": "unit",
+            "type": "string"
+          },
+          {
+            "name": "direction",
+            "type": "string"
+          },
+          {
+            "name": "degree",
+            "type": "int"
+          },
+          {
+            "name": "gust_speed",
+            "type": "double"
+          }
+        ]
+      }
+    }
+  ]
+}
