@@ -16,7 +16,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 public class SchemaRegistry implements Serializable {
-    private static final String REGISTRY_FILE = "/avro-config/registry.yaml";
+    private static final String REGISTRY_FILE = "/avro-config/schema-registry.yaml";
     private Map<Integer, SchemaElement> schemas = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(SchemaRegistry.class);
     public SchemaRegistry() {
@@ -26,10 +26,13 @@ public class SchemaRegistry implements Serializable {
         return schemas.toString();
     }
     public int getIndex(Schema schema) {
-        Optional<SchemaElement> schemaElemOpt =
-                schemas.values().stream().filter(s -> schema.equals(s.getSchema())).findFirst();
-
-        return schemaElemOpt.map(SchemaElement::getId).orElse(-1);
+        return
+                schemas.values()
+                        .stream()
+                        .filter(s -> schema.equals(s.getSchema()))
+                        .findFirst()
+                        .map(SchemaElement::getId)
+                        .orElse(-1);
     }
     public Schema getSchema(int index) {
         if (!schemas.containsKey(index)) {
@@ -55,7 +58,7 @@ public class SchemaRegistry implements Serializable {
                                 s.setSchema(schema);
                                 schemas.put(s.getId(), s);
                             } catch (Exception e) {
-                                throw new RuntimeException("Cannot start", e);
+                                throw new RuntimeException("Cannot start.", e);
                             }
                         });
     }

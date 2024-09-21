@@ -14,16 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AvroSerializer implements Serializer<GenericRecord>, Serializable {
-
-    private static final long serialVersionUID = 55783815222597735L;
-
-    static Logger LOG = LoggerFactory.getLogger(AvroSerializer.class);
-
+    private static final long serialVersionUID = -2295385122095243161L;
+    static Logger logger = LoggerFactory.getLogger(AvroSerializer.class);
     private static SchemaRegistry registry = new SchemaRegistry();
-
-    @Override
-    public void configure(Map<String, ?> configs, boolean isKey) {}
-
     @Override
     public byte[] serialize(String topic, GenericRecord data) {
 
@@ -34,7 +27,7 @@ public class AvroSerializer implements Serializer<GenericRecord>, Serializable {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
             int index = registry.getIndex(data.getSchema());
-            LOG.trace(" Serializing from {} ({})", data.getSchema(), index);
+            logger.trace(" Serializing from {} ({})", data.getSchema(), index);
 
             out.write(index);
 
@@ -49,7 +42,4 @@ public class AvroSerializer implements Serializer<GenericRecord>, Serializable {
             throw new SerializationException("Error when serializing Avro record to byte[] ", e);
         }
     }
-
-    @Override
-    public void close() {}
 }

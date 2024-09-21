@@ -1,5 +1,6 @@
 package com.weather.info.avro;
 import org.apache.avro.generic.GenericRecord;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class WeatherPayloadTest {
@@ -38,7 +39,7 @@ class WeatherPayloadTest {
              AvroSerializer ser = new AvroSerializer()) {
             byte[] bytes = ser.serialize("test", weatherData);
             GenericRecord obj = deser.deserialize("test", bytes);
-            System.out.println("Weather Data - deserialsed : " + obj);
+            Assertions.assertTrue(obj.toString().equals("{\"deviceId\": \"123\", \"timestamp\": 23123, \"location\": {\"latitude\": 23213.0, \"longitude\": 3212.0}, \"temperature\": {\"current\": 321.0, \"unit\": \"123\"}, \"humidity\": {\"value\": 2135, \"unit\": \"213\"}, \"pressure\": {\"value\": 123, \"unit\": \"345\"}, \"wind\": {\"speed\": 123.0, \"unit\": \"123\", \"direction\": \"321\", \"degree\": 1, \"gust_speed\": 312.0}}"));
         }
     }
 }
