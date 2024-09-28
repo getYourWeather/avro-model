@@ -16,28 +16,29 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 public class SchemaRegistry implements Serializable {
+    private static final Logger logger = LoggerFactory.getLogger(SchemaRegistry.class);
     private static final String REGISTRY_FILE = "/avro-config/schema-registry.yaml";
     private Map<Integer, SchemaElement> schemas = new HashMap<>();
-    private static final Logger logger = LoggerFactory.getLogger(SchemaRegistry.class);
+
     public SchemaRegistry() {
-        init();
+        populateSchemas();
     }
     public String asString() {
         return schemas.toString();
     }
-    public int getIndex(Schema schema) {
+    public int getIndexForSchema(Schema schema) {
         return
                 schemas.values()
                         .stream()
                         .filter(s -> schema.equals(s.getSchema()))
                         .findFirst()
-                        .map(SchemaElement::getId)
+                        .map(ele -> ele.getId())
                         .orElse(-1);
     }
-    public Schema getSchema(int index) {
+    public Schema getSchemaFroMagic(int index) {
         if (!schemas.containsKey(index)) {
             logger.warn(
-                    "Schema registry doesn't have entry for index: {},  registry contents:{}",
+                    "Schema registry don't have info for index: {},  Registry:\n{}",
                     index,
                     schemas);
             schemas
@@ -46,9 +47,9 @@ public class SchemaRegistry implements Serializable {
         }
         return schemas.get(index).getSchema();
     }
-    private void init() {
+    private void populateSchemas() {
         schemas.clear();
-        loadYaml()
+        readYaml()
                 .forEach(
                         s -> {
                             try {
@@ -58,11 +59,11 @@ public class SchemaRegistry implements Serializable {
                                 s.setSchema(schema);
                                 schemas.put(s.getId(), s);
                             } catch (Exception e) {
-                                throw new RuntimeException("Cannot start.", e);
+                                throw new RuntimeException("Unable to start.", e);
                             }
                         });
     }
-    private List<SchemaElement> loadYaml() {
+    private List<SchemaElement> readYaml() {
         Yaml yaml = new Yaml(new Constructor(SchemaElement.class, new LoaderOptions()));
         InputStream stream = SchemaRegistry.class.getResourceAsStream(REGISTRY_FILE);
         List<SchemaElement> list = new ArrayList<>();
